@@ -1,4 +1,4 @@
-name: CI - Vinilos Android
+name: CI - Hogar Android
 
 on:
   push:
