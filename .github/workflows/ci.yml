@@ -1,0 +1,209 @@
+name: CI - Vinilos Android
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Versión manual (opcional)'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ─────────────────────────────────────────────
+  # JOB 1: Compilar
+  # ─────────────────────────────────────────────
+  test-and-build:
+    name: Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Cachear Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Dar permisos a gradlew
+        run: chmod +x gradlew
+
+      - name: Verificar que compila
+        run: ./gradlew assembleDebug --stacktrace
+
+  # ─────────────────────────────────────────────
+  # JOB 2: Verificar que el APK release se construye
+  # ─────────────────────────────────────────────
+  apk-check:
+    name: APK Release Check
+    runs-on: ubuntu-latest
+    needs: test-and-build
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Cachear Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Dar permisos a gradlew
+        run: chmod +x gradlew
+
+      - name: Decodificar Keystore
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+        run: |
+          echo "$KEYSTORE_BASE64" | base64 --decode > ${{ runner.temp }}/vinilos-release-key.jks
+
+      - name: Construir APK release (firmado)
+        env:
+          KEYSTORE_PATH: ${{ runner.temp }}/vinilos-release-key.jks
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: ./gradlew assembleRelease --stacktrace
+
+      - name: Verificar que el APK existe
+        run: |
+          APK_PATH=$(find app/build/outputs/apk/release -name "*.apk" | head -1)
+          if [ -z "$APK_PATH" ]; then
+            echo "No se encontró el APK de release"
+            exit 1
+          fi
+          echo "APK generado: $APK_PATH"
+          ls -lh "$APK_PATH"
+
+      - name: Subir APK como artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: vinilos-release-apk
+          path: app/build/outputs/apk/release/*.apk
+          retention-days: 7
+
+  # ─────────────────────────────────────────────
+  # JOB 3: Release y Merge (solo en workflow_dispatch)
+  # ─────────────────────────────────────────────
+  release-and-merge:
+    name: Release y Merge
+    runs-on: ubuntu-latest
+    needs: [test-and-build, apk-check]
+    if: github.event_name == 'workflow_dispatch'
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configurar Git
+        run: |
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+
+      - name: Definir versión
+        run: |
+          if [ -n "${{ github.event.inputs.version }}" ]; then
+            VERSION="${{ github.event.inputs.version }}"
+          else
+            git fetch --tags
+            LAST_TAG=$(git tag -l "v*" | sort -V | tail -n1)
+            if [ -z "$LAST_TAG" ]; then
+              VERSION="1.0.0"
+            else
+              LAST_VERSION=$(echo $LAST_TAG | sed 's/v//')
+              MAJOR=$(echo $LAST_VERSION | cut -d. -f1)
+              MINOR=$(echo $LAST_VERSION | cut -d. -f2)
+              PATCH=$(echo $LAST_VERSION | cut -d. -f3)
+              PATCH=$((PATCH + 1))
+              VERSION="$MAJOR.$MINOR.$PATCH"
+            fi
+          fi
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Crear rama release
+        run: |
+          RELEASE_BRANCH="release_$VERSION"
+          echo "RELEASE_BRANCH=$RELEASE_BRANCH" >> $GITHUB_ENV
+          git checkout develop
+          git pull origin develop
+          git checkout -b "$RELEASE_BRANCH"
+
+          # Actualizar versionName y versionCode en build.gradle.kts
+          sed -i "s/versionName = \".*\"/versionName = \"$VERSION\"/" app/build.gradle.kts
+          CURRENT_CODE=$(grep "versionCode" app/build.gradle.kts | grep -o '[0-9]*')
+          NEW_CODE=$((CURRENT_CODE + 1))
+          sed -i "s/versionCode = $CURRENT_CODE/versionCode = $NEW_CODE/" app/build.gradle.kts
+
+          echo "$VERSION" > VERSION.txt
+          git add app/build.gradle.kts VERSION.txt
+          git commit -m "release: prepare v$VERSION"
+          git push -u origin "$RELEASE_BRANCH"
+
+      - name: Merge release -> main
+        run: |
+          git checkout main
+          git pull origin main
+          git merge "$RELEASE_BRANCH" --no-ff -X theirs -m "release: merge v$VERSION to main"
+          git push origin main
+
+      - name: Crear Release en GitHub (con Changelog)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git tag -a "v$VERSION" -m "Release v$VERSION"
+          git push origin "v$VERSION"
+          gh release create "v$VERSION" --generate-notes --title "Release v$VERSION"
+
+      - name: Descargar APK del artefacto
+        uses: actions/download-artifact@v4
+        with:
+          name: vinilos-release-apk
+          path: apk-release/
+
+      - name: Subir APK al Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          APK_PATH=$(find apk-release -name "*.apk" | head -1)
+          if [ -n "$APK_PATH" ]; then
+            gh release upload "v$VERSION" "$APK_PATH"
+          else
+            echo "No se encontró el APK para subir al release"
+            exit 1
+          fi
+
+      - name: Merge main -> develop
+        run: |
+          git checkout develop
+          git pull origin develop
+          git merge main
+          git push origin develop
+
+      - name: Eliminar rama release
+        run: git push origin --delete "$RELEASE_BRANCH"
