@@ -21,6 +21,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.Image
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import com.misw.hogarorden.R
 import com.misw.hogarorden.ui.theme.*
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -95,8 +99,13 @@ fun TaskDetailScreen(
                     .fillMaxWidth()
                     .height(200.dp)
                     .clip(RoundedCornerShape(12.dp))
-                    .background(Color.LightGray)
             ) {
+                Image(
+                    painter = painterResource(id = R.drawable.lavar_platos_detalle_tarea_image),
+                    contentDescription = "Detalle de la tarea",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize()
+                )
                 // Racha chip
                 Surface(
                     color = Color.White,

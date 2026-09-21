@@ -20,6 +20,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.Image
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import com.misw.hogarorden.R
 import com.misw.hogarorden.ui.theme.*
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -86,8 +90,13 @@ fun ConfirmTaskScreen(
                             .fillMaxWidth()
                             .height(250.dp)
                             .clip(RoundedCornerShape(12.dp))
-                            .background(Color(0xFFE0E0E0))
                     ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.lavar_platos_confirmar_tarea_evidencia_image),
+                            contentDescription = "Evidencia de la tarea",
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier.fillMaxSize()
+                        )
                         // Top chip
                         Surface(
                             color = White,

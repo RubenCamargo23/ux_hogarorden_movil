@@ -26,6 +26,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.painterResource
+import com.misw.hogarorden.R
 import com.misw.hogarorden.ui.theme.*
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -234,6 +236,8 @@ fun LoginScreen(
                             shape = RoundedCornerShape(12.dp),
                             border = BorderStroke(1.dp, OutlineVariant)
                         ) {
+                            Icon(painter = painterResource(id = R.drawable.google_icon), contentDescription = null, modifier = Modifier.size(20.dp), tint = Color.Unspecified)
+                            Spacer(modifier = Modifier.width(8.dp))
                             Text("Google", color = NeutralAction, style = AppTypography.titleSmall)
                         }
                         
@@ -245,6 +249,8 @@ fun LoginScreen(
                             shape = RoundedCornerShape(12.dp),
                             border = BorderStroke(1.dp, OutlineVariant)
                         ) {
+                            Icon(painter = painterResource(id = R.drawable.apple_icon), contentDescription = null, modifier = Modifier.size(20.dp), tint = Color.Unspecified)
+                            Spacer(modifier = Modifier.width(8.dp))
                             Text("Apple", color = NeutralAction, style = AppTypography.titleSmall)
                         }
                     }
