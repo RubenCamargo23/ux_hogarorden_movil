@@ -12,7 +12,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.material.icons.outlined.Send
+import androidx.compose.material.icons.automirrored.outlined.Send
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -162,7 +162,7 @@ fun PostponeScreen(
             )
             
             // Custom option (Dashed border)
-            val dashPathEffect = PathEffect.dashPath(floatArrayOf(15f, 15f), 0f)
+            val dashPathEffect = PathEffect.dashPathEffect(floatArrayOf(15f, 15f), 0f)
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -271,7 +271,7 @@ fun PostponeScreen(
                 colors = ButtonDefaults.buttonColors(containerColor = Primary),
                 shape = RoundedCornerShape(8.dp)
             ) {
-                Icon(Icons.Outlined.Send, contentDescription = null, modifier = Modifier.size(16.dp))
+                Icon(Icons.AutoMirrored.Outlined.Send, contentDescription = null, modifier = Modifier.size(16.dp))
                 Spacer(modifier = Modifier.width(8.dp))
                 Text("Enviar aviso y posponer", fontSize = 16.sp, fontWeight = FontWeight.Bold)
             }

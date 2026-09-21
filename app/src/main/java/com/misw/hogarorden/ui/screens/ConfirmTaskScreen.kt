@@ -139,7 +139,7 @@ fun ConfirmTaskScreen(
 
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(horizontal = 4.dp, bottom = 4.dp)
+                        modifier = Modifier.padding(horizontal = 4.dp).padding(bottom = 4.dp)
                     ) {
                         Icon(Icons.Default.CheckCircleOutline, contentDescription = null, tint = Primary, modifier = Modifier.size(18.dp))
                         Spacer(modifier = Modifier.width(8.dp))
@@ -196,11 +196,22 @@ fun ConfirmTaskScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.weight(1f)
+                        ) {
                             Icon(Icons.Outlined.Notifications, contentDescription = null, tint = NeutralAction, modifier = Modifier.size(20.dp))
                             Spacer(modifier = Modifier.width(12.dp))
-                            Text("Avisar a Brian y Ana al completar", style = AppTypography.bodyMedium, color = NeutralAction, fontWeight = FontWeight.Medium)
+                            Text(
+                                text = "Avisar a Brian y Ana al completar", 
+                                style = AppTypography.bodyMedium, 
+                                color = NeutralAction, 
+                                fontWeight = FontWeight.Medium,
+                                maxLines = 1,
+                                overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+                            )
                         }
+                        Spacer(modifier = Modifier.width(8.dp))
                         Switch(
                             checked = notifyOthers,
                             onCheckedChange = { notifyOthers = it },

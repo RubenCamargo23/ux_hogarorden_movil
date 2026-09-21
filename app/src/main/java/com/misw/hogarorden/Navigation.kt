@@ -37,6 +37,7 @@ fun AppNavigation() {
         }
         composable(Screen.Register.route) {
             RegisterScreen(
+                onNavigateToLogin = { navController.popBackStack() },
                 onNavigateToHome = {
                     navController.navigate(Screen.Home.route) {
                         popUpTo(Screen.Login.route) { inclusive = true }

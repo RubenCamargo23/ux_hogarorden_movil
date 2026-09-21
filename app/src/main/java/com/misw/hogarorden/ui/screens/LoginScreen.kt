@@ -272,7 +272,3 @@ fun LoginScreen(
         }
     }
 }
-6.dp))
-        }
-    }
-}
