@@ -2,19 +2,31 @@ package com.misw.hogarorden.ui.screens
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.outlined.Send
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.misw.hogarorden.ui.theme.*
@@ -30,24 +42,34 @@ fun PostponeScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Column {
-                        Text("Posponer Tarea", style = AppTypography.bodyLarge, fontWeight = FontWeight.Bold)
-                        Text("Lavar los platos • Cocina", style = AppTypography.bodySmall, color = Secondary)
-                    }
-                },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.Default.ChevronLeft, contentDescription = "Volver")
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = BackgroundColor,
-                    navigationIconContentColor = NeutralAction,
-                    titleContentColor = NeutralAction
+            Column {
+                TopAppBar(
+                    title = {
+                        Column {
+                            Text("Posponer Tarea", style = AppTypography.bodyLarge, fontWeight = FontWeight.Bold)
+                            Text("Lavar los platos • Cocina", style = AppTypography.bodySmall, color = Secondary)
+                        }
+                    },
+                    navigationIcon = {
+                        IconButton(
+                            onClick = onNavigateBack,
+                            modifier = Modifier
+                                .padding(start = 16.dp, end = 8.dp)
+                                .size(40.dp)
+                                .background(White, CircleShape)
+                                .border(1.dp, OutlineVariant, CircleShape)
+                        ) {
+                            Icon(Icons.Default.ChevronLeft, contentDescription = "Volver", tint = NeutralAction)
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = BackgroundColor,
+                        navigationIconContentColor = NeutralAction,
+                        titleContentColor = NeutralAction
+                    )
                 )
-            )
+                HorizontalDivider(color = OutlineVariant)
+            }
         },
         containerColor = BackgroundColor
     ) { paddingValues ->
@@ -63,7 +85,8 @@ fun PostponeScreen(
             // Limit card
             Card(
                 colors = CardDefaults.cardColors(containerColor = White),
-                shape = RoundedCornerShape(8.dp),
+                shape = RoundedCornerShape(12.dp),
+                border = BorderStroke(1.dp, OutlineVariant),
                 elevation = CardDefaults.cardElevation(0.dp)
             ) {
                 Row(
@@ -74,7 +97,15 @@ fun PostponeScreen(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(Icons.Default.Schedule, contentDescription = null, tint = Secondary, modifier = Modifier.size(24.dp))
+                        Box(
+                            modifier = Modifier
+                                .size(32.dp)
+                                .background(Color(0xFFE8F5F3), RoundedCornerShape(8.dp))
+                                .border(1.dp, OutlineVariant, RoundedCornerShape(8.dp)),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(Icons.Default.Schedule, contentDescription = null, tint = Primary, modifier = Modifier.size(16.dp))
+                        }
                         Spacer(modifier = Modifier.width(12.dp))
                         Column {
                             Text("LÍMITE PROGRAMADO", style = AppTypography.labelLarge.copy(fontSize = 10.sp), color = Secondary)
@@ -82,13 +113,14 @@ fun PostponeScreen(
                         }
                     }
                     Surface(
-                        color = Color(0xFFFDE8E8),
-                        shape = RoundedCornerShape(16.dp)
+                        color = Color(0xFFFDF2F2),
+                        shape = RoundedCornerShape(8.dp),
+                        border = BorderStroke(1.dp, Color(0xFFFAD2D2))
                     ) {
                         Text(
                             "Pendiente",
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                            color = Warning,
+                            color = Accent,
                             style = AppTypography.labelLarge.copy(fontSize = 10.sp)
                         )
                     }
@@ -129,25 +161,31 @@ fun PostponeScreen(
                 onClick = { selectedOption = 2 }
             )
             
-            // Custom option
-            Card(
-                colors = CardDefaults.cardColors(containerColor = White),
-                shape = RoundedCornerShape(8.dp),
-                elevation = CardDefaults.cardElevation(0.dp),
+            // Custom option (Dashed border)
+            val dashPathEffect = PathEffect.dashPath(floatArrayOf(15f, 15f), 0f)
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 4.dp)
+                    .drawBehind {
+                        drawRoundRect(
+                            color = OutlineVariant,
+                            style = Stroke(width = 1.dp.toPx(), pathEffect = dashPathEffect),
+                            cornerRadius = CornerRadius(8.dp.toPx())
+                        )
+                    }
                     .clickable { /* open picker */ }
+                    .padding(16.dp)
             ) {
                 Row(
-                    modifier = Modifier.padding(16.dp).fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(Icons.Default.RadioButtonUnchecked, contentDescription = null, tint = OutlineVariant)
                         Spacer(modifier = Modifier.width(16.dp))
-                        Text("Definir otra hora personalizada...", style = AppTypography.bodyMedium, color = Secondary)
+                        Text("Definir otra hora personalizada...", style = AppTypography.bodyMedium, color = NeutralAction)
                     }
                     Icon(Icons.Default.ChevronRight, contentDescription = null, tint = Secondary)
                 }
@@ -164,50 +202,37 @@ fun PostponeScreen(
             }
             Spacer(modifier = Modifier.height(8.dp))
 
-            OutlinedTextField(
-                value = message,
-                onValueChange = { message = it },
+            // Message box with chips inside
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(100.dp),
-                shape = RoundedCornerShape(8.dp),
-                colors = OutlinedTextFieldDefaults.colors(
-                    unfocusedBorderColor = OutlineVariant,
-                    focusedBorderColor = Primary,
-                    unfocusedContainerColor = White,
-                    focusedContainerColor = White
+                    .background(White, RoundedCornerShape(12.dp))
+                    .border(1.dp, OutlineVariant, RoundedCornerShape(12.dp))
+                    .padding(12.dp)
+            ) {
+                BasicTextField(
+                    value = message,
+                    onValueChange = { message = it },
+                    textStyle = AppTypography.bodyMedium.copy(color = NeutralAction),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(60.dp)
                 )
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                FilterChip(
-                    selected = false,
-                    onClick = { },
-                    label = { Text("💼 Trabajo", style = AppTypography.bodySmall) },
-                    shape = RoundedCornerShape(16.dp)
-                )
-                FilterChip(
-                    selected = false,
-                    onClick = { },
-                    label = { Text("💊 Salud", style = AppTypography.bodySmall) },
-                    shape = RoundedCornerShape(16.dp)
-                )
-                FilterChip(
-                    selected = false,
-                    onClick = { },
-                    label = { Text("📚 Estudio", style = AppTypography.bodySmall) },
-                    shape = RoundedCornerShape(16.dp)
-                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    MessageChip("💼 Trabajo")
+                    MessageChip("🤒 Salud")
+                    MessageChip("📚 Estudio")
+                }
             }
 
             Spacer(modifier = Modifier.height(24.dp))
 
             // Notification Card
             Card(
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFFDE8E8)),
+                colors = CardDefaults.cardColors(containerColor = Color(0xFFFDF2F2)),
                 shape = RoundedCornerShape(8.dp),
+                border = BorderStroke(1.dp, Color(0xFFFAD2D2)),
                 elevation = CardDefaults.cardElevation(0.dp)
             ) {
                 Row(
@@ -219,8 +244,15 @@ fun PostponeScreen(
                     Column {
                         Text("Se notificará a Casa de los Rosales", style = AppTypography.bodyMedium, fontWeight = FontWeight.Bold, color = Accent)
                         Spacer(modifier = Modifier.height(4.dp))
+                        val annotatedText = buildAnnotatedString {
+                            append("Brian y Ana verán el nuevo horario acordado en la pestaña de ")
+                            withStyle(style = SpanStyle(textDecoration = TextDecoration.Underline)) {
+                                append("Avisos")
+                            }
+                            append(". Tu racha se mantiene intacta si la completas dentro del nuevo plazo.")
+                        }
                         Text(
-                            "Brian y Ana verán el nuevo horario acordado en la pestaña de Avisos. Tu racha se mantiene intacta si la completas dentro del nuevo plazo.",
+                            text = annotatedText,
                             style = AppTypography.bodySmall,
                             color = Accent
                         )
@@ -239,7 +271,7 @@ fun PostponeScreen(
                 colors = ButtonDefaults.buttonColors(containerColor = Primary),
                 shape = RoundedCornerShape(8.dp)
             ) {
-                Icon(Icons.Default.Send, contentDescription = null, modifier = Modifier.size(16.dp))
+                Icon(Icons.Outlined.Send, contentDescription = null, modifier = Modifier.size(16.dp))
                 Spacer(modifier = Modifier.width(8.dp))
                 Text("Enviar aviso y posponer", fontSize = 16.sp, fontWeight = FontWeight.Bold)
             }
@@ -259,6 +291,22 @@ fun PostponeScreen(
 }
 
 @Composable
+fun MessageChip(text: String) {
+    Surface(
+        color = White,
+        shape = RoundedCornerShape(16.dp),
+        border = BorderStroke(1.dp, OutlineVariant)
+    ) {
+        Text(
+            text = text,
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+            style = AppTypography.bodySmall,
+            color = NeutralAction
+        )
+    }
+}
+
+@Composable
 fun PostponeOption(
     title: String,
     subtitle: String,
@@ -272,12 +320,14 @@ fun PostponeOption(
             .padding(vertical = 4.dp)
             .clickable(onClick = onClick),
         colors = CardDefaults.cardColors(containerColor = if (selected) Color(0xFFE8F5F3) else White),
-        shape = RoundedCornerShape(8.dp),
-        border = if (selected) BorderStroke(1.dp, Primary) else null,
+        shape = RoundedCornerShape(12.dp),
+        border = if (selected) BorderStroke(1.dp, Primary) else BorderStroke(1.dp, OutlineVariant),
         elevation = CardDefaults.cardElevation(0.dp)
     ) {
         Row(
-            modifier = Modifier.padding(16.dp).fillMaxWidth(),
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -289,7 +339,7 @@ fun PostponeOption(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Column {
-                    Text(title, style = AppTypography.bodyMedium, color = NeutralAction, fontWeight = FontWeight.Medium)
+                    Text(title, style = AppTypography.bodyMedium, color = NeutralAction, fontWeight = FontWeight.Bold)
                     Text(subtitle, style = AppTypography.bodySmall, color = Secondary)
                 }
             }

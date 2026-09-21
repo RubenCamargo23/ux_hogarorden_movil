@@ -1,5 +1,6 @@
 package com.misw.hogarorden.ui.screens
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -17,8 +18,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.misw.hogarorden.ui.theme.*
@@ -48,8 +52,7 @@ fun HomeScreen(
                 color = NeutralAction
             )
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("Miércoles, 24 Mayo", style = AppTypography.bodySmall, color = Secondary)
-                Spacer(modifier = Modifier.width(4.dp))
+                Text("Miércoles, 24 Mayo • ", style = AppTypography.bodySmall, color = Secondary)
                 Icon(Icons.Default.LocationOn, contentDescription = null, modifier = Modifier.size(12.dp), tint = Secondary)
                 Spacer(modifier = Modifier.width(4.dp))
                 Text("Casa de los Rosales", style = AppTypography.bodySmall, color = Secondary)
@@ -61,6 +64,7 @@ fun HomeScreen(
             Card(
                 colors = CardDefaults.cardColors(containerColor = White),
                 shape = RoundedCornerShape(12.dp),
+                border = BorderStroke(1.dp, OutlineVariant),
                 elevation = CardDefaults.cardElevation(0.dp)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
@@ -69,7 +73,13 @@ fun HomeScreen(
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text("Ritmo del día", fontWeight = FontWeight.Bold, color = NeutralAction)
-                        Text("1 de 3 completadas (33%)", color = Secondary, style = AppTypography.bodySmall)
+                        val progressText = buildAnnotatedString {
+                            append("1 de 3 completadas ")
+                            withStyle(style = SpanStyle(color = Primary)) {
+                                append("(33%)")
+                            }
+                        }
+                        Text(text = progressText, style = AppTypography.bodySmall)
                     }
                     Spacer(modifier = Modifier.height(8.dp))
                     LinearProgressIndicator(
@@ -88,8 +98,9 @@ fun HomeScreen(
 
             // Alert Card
             Card(
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFFDEDED)),
+                colors = CardDefaults.cardColors(containerColor = Color(0xFFFDF2F2)),
                 shape = RoundedCornerShape(8.dp),
+                border = BorderStroke(1.dp, Color(0xFFFAD2D2)),
                 elevation = CardDefaults.cardElevation(0.dp)
             ) {
                 Row(
@@ -117,19 +128,24 @@ fun HomeScreen(
                     selected = true,
                     onClick = { },
                     label = { Text("Todas (3)", color = White) },
-                    colors = FilterChipDefaults.filterChipColors(selectedContainerColor = NeutralAction),
+                    colors = FilterChipDefaults.filterChipColors(selectedContainerColor = Primary),
+                    border = FilterChipDefaults.filterChipBorder(enabled = true, selected = true, borderColor = Primary),
                     shape = RoundedCornerShape(16.dp)
                 )
                 FilterChip(
                     selected = false,
                     onClick = { },
                     label = { Text("Cocina", color = Secondary) },
+                    border = FilterChipDefaults.filterChipBorder(enabled = true, selected = false, borderColor = OutlineVariant),
+                    colors = FilterChipDefaults.filterChipColors(containerColor = White),
                     shape = RoundedCornerShape(16.dp)
                 )
                 FilterChip(
                     selected = false,
                     onClick = { },
                     label = { Text("Zonas comunes", color = Secondary) },
+                    border = FilterChipDefaults.filterChipBorder(enabled = true, selected = false, borderColor = OutlineVariant),
+                    colors = FilterChipDefaults.filterChipColors(containerColor = White),
                     shape = RoundedCornerShape(16.dp)
                 )
             }
@@ -227,6 +243,7 @@ fun TaskItem(
             .clickable(onClick = onClick),
         colors = CardDefaults.cardColors(containerColor = White),
         shape = RoundedCornerShape(12.dp),
+        border = BorderStroke(1.dp, OutlineVariant),
         elevation = CardDefaults.cardElevation(0.dp)
     ) {
         Row(
@@ -236,16 +253,16 @@ fun TaskItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                imageVector = if (completed) Icons.Outlined.CheckCircle else Icons.Outlined.Circle,
+                imageVector = if (completed) Icons.Filled.CheckCircle else Icons.Outlined.Circle,
                 contentDescription = null,
-                tint = if (completed) Primary else OutlineVariant,
+                tint = if (completed) Secondary else OutlineVariant,
                 modifier = Modifier.size(24.dp)
             )
             Spacer(modifier = Modifier.width(16.dp))
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = title,
-                    style = AppTypography.bodyLarge,
+                    style = AppTypography.bodyLarge.copy(fontWeight = FontWeight.Medium),
                     color = if (completed) Secondary else NeutralAction,
                     textDecoration = if (completed) TextDecoration.LineThrough else TextDecoration.None
                 )
@@ -288,18 +305,22 @@ fun HomeBottomNavigation() {
         NavigationBarItem(
             selected = true,
             onClick = { },
-            icon = { Icon(Icons.Default.Home, contentDescription = "Hoy") },
+            icon = { Icon(Icons.Default.EventAvailable, contentDescription = "Hoy") },
             label = { Text("Hoy", fontWeight = FontWeight.Bold) },
             colors = NavigationBarItemDefaults.colors(
-                selectedIconColor = NeutralAction,
-                selectedTextColor = NeutralAction,
-                indicatorColor = BackgroundColor
+                selectedIconColor = Primary,
+                selectedTextColor = Primary,
+                indicatorColor = White
             )
         )
         NavigationBarItem(
             selected = false,
             onClick = { },
-            icon = { Icon(Icons.Default.Notifications, contentDescription = "Avisos") },
+            icon = { 
+                BadgedBox(badge = { Badge { Text("1") } }) {
+                    Icon(Icons.Default.Notifications, contentDescription = "Avisos")
+                }
+            },
             label = { Text("Avisos") },
             colors = NavigationBarItemDefaults.colors(
                 unselectedIconColor = Secondary,
@@ -319,7 +340,7 @@ fun HomeBottomNavigation() {
         NavigationBarItem(
             selected = false,
             onClick = { },
-            icon = { Icon(Icons.Default.Person, contentDescription = "Perfil") },
+            icon = { Icon(Icons.Default.ManageAccounts, contentDescription = "Perfil") },
             label = { Text("Perfil") },
             colors = NavigationBarItemDefaults.colors(
                 unselectedIconColor = Secondary,
