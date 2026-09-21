@@ -48,7 +48,7 @@ fun HomeScreen(
             // Header
             Text(
                 text = "Mis tareas",
-                style = AppTypography.titleLarge,
+                style = AppTypography.headlineSmall.copy(fontWeight = FontWeight.Bold),
                 color = NeutralAction
             )
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -72,7 +72,7 @@ fun HomeScreen(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Text("Ritmo del día", fontWeight = FontWeight.Bold, color = NeutralAction)
+                        Text("Ritmo del día", style = AppTypography.titleMedium, fontWeight = FontWeight.Bold, color = NeutralAction)
                         val progressText = buildAnnotatedString {
                             append("1 de 3 completadas ")
                             withStyle(style = SpanStyle(color = Primary)) {
@@ -86,8 +86,8 @@ fun HomeScreen(
                         progress = { 0.33f },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(8.dp)
-                            .clip(RoundedCornerShape(4.dp)),
+                            .height(12.dp)
+                            .clip(RoundedCornerShape(6.dp)),
                         color = Primary,
                         trackColor = BackgroundColor
                     )
@@ -98,9 +98,9 @@ fun HomeScreen(
 
             // Alert Card
             Card(
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFFDF2F2)),
+                colors = CardDefaults.cardColors(containerColor = SurfaceLightRed),
                 shape = RoundedCornerShape(8.dp),
-                border = BorderStroke(1.dp, Color(0xFFFAD2D2)),
+                border = BorderStroke(1.dp, OutlineVariant),
                 elevation = CardDefaults.cardElevation(0.dp)
             ) {
                 Row(
@@ -114,7 +114,7 @@ fun HomeScreen(
                     Text(
                         "Lavar los platos vence en 2 horas",
                         color = ErrorColor,
-                        style = AppTypography.bodySmall,
+                        style = AppTypography.bodyMedium,
                         fontWeight = FontWeight.Medium
                     )
                 }
@@ -158,8 +158,8 @@ fun HomeScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text("TAREAS PENDIENTES", style = AppTypography.labelLarge.copy(fontSize = 12.sp), color = Secondary)
-                Text("2 restantes", style = AppTypography.bodySmall.copy(fontSize = 12.sp), color = Secondary)
+                Text("TAREAS PENDIENTES", style = AppTypography.labelMedium, color = Secondary)
+                Text("2 restantes", style = AppTypography.bodyMedium, color = Secondary)
             }
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -190,8 +190,8 @@ fun HomeScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text("COMPLETADAS HOY", style = AppTypography.labelLarge.copy(fontSize = 12.sp), color = Secondary)
-                Text("1", style = AppTypography.bodySmall.copy(fontSize = 12.sp), color = Secondary)
+                Text("COMPLETADAS HOY", style = AppTypography.labelMedium, color = Secondary)
+                Text("1", style = AppTypography.bodyMedium, color = Secondary)
             }
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -215,11 +215,11 @@ fun HomeScreen(
                     .fillMaxWidth()
                     .height(50.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Primary),
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(12.dp)
             ) {
                 Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(20.dp))
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Nueva tarea", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                Text("Nueva tarea", fontSize = 16.sp, fontWeight = FontWeight.Medium)
             }
 
             Spacer(modifier = Modifier.height(32.dp))
@@ -262,7 +262,7 @@ fun TaskItem(
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = title,
-                    style = AppTypography.bodyLarge.copy(fontWeight = FontWeight.Medium),
+                    style = AppTypography.titleMedium.copy(fontWeight = FontWeight.Medium),
                     color = if (completed) Secondary else NeutralAction,
                     textDecoration = if (completed) TextDecoration.LineThrough else TextDecoration.None
                 )
@@ -272,7 +272,7 @@ fun TaskItem(
                         Spacer(modifier = Modifier.width(8.dp))
                         Row(
                             modifier = Modifier
-                                .background(Color(0xFFE8F5F3), RoundedCornerShape(4.dp))
+                                .background(SurfaceLightGreen, RoundedCornerShape(4.dp))
                                 .padding(horizontal = 4.dp, vertical = 2.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {

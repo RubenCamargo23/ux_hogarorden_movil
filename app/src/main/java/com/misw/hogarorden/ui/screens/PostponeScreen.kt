@@ -46,7 +46,7 @@ fun PostponeScreen(
                 TopAppBar(
                     title = {
                         Column {
-                            Text("Posponer Tarea", style = AppTypography.bodyLarge, fontWeight = FontWeight.Bold)
+                            Text("Posponer Tarea", style = AppTypography.titleLarge, fontWeight = FontWeight.Bold)
                             Text("Lavar los platos • Cocina", style = AppTypography.bodySmall, color = Secondary)
                         }
                     },
@@ -100,7 +100,7 @@ fun PostponeScreen(
                         Box(
                             modifier = Modifier
                                 .size(32.dp)
-                                .background(Color(0xFFE8F5F3), RoundedCornerShape(8.dp))
+                                .background(SurfaceLightGreen, RoundedCornerShape(8.dp))
                                 .border(1.dp, OutlineVariant, RoundedCornerShape(8.dp)),
                             contentAlignment = Alignment.Center
                         ) {
@@ -108,20 +108,20 @@ fun PostponeScreen(
                         }
                         Spacer(modifier = Modifier.width(12.dp))
                         Column {
-                            Text("LÍMITE PROGRAMADO", style = AppTypography.labelLarge.copy(fontSize = 10.sp), color = Secondary)
+                            Text("LÍMITE PROGRAMADO", style = AppTypography.labelMedium, color = Secondary)
                             Text("Hoy, 8:00 pm", style = AppTypography.bodyMedium, color = NeutralAction, fontWeight = FontWeight.Bold)
                         }
                     }
                     Surface(
-                        color = Color(0xFFFDF2F2),
+                        color = SurfaceLightRed,
                         shape = RoundedCornerShape(8.dp),
-                        border = BorderStroke(1.dp, Color(0xFFFAD2D2))
+                        border = BorderStroke(1.dp, OutlineVariant)
                     ) {
                         Text(
                             "Pendiente",
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                             color = Accent,
-                            style = AppTypography.labelLarge.copy(fontSize = 10.sp)
+                            style = AppTypography.labelMedium
                         )
                     }
                 }
@@ -137,7 +137,7 @@ fun PostponeScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            Text("¿CUÁNDO PODRÁS HACERLA?", style = AppTypography.labelLarge.copy(fontSize = 12.sp), color = Secondary)
+            Text("¿CUÁNDO PODRÁS HACERLA?", style = AppTypography.titleSmall, color = Secondary)
             Spacer(modifier = Modifier.height(8.dp))
 
             // Options
@@ -197,8 +197,8 @@ fun PostponeScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text("MENSAJE PARA LA CASA (OPCIONAL)", style = AppTypography.labelLarge.copy(fontSize = 12.sp), color = Secondary)
-                Text("64 / 150", style = AppTypography.bodySmall.copy(fontSize = 10.sp), color = Secondary)
+                Text("MENSAJE PARA LA CASA (OPCIONAL)", style = AppTypography.titleSmall, color = Secondary)
+                Text("64 / 150", style = AppTypography.bodySmall, color = Secondary)
             }
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -230,9 +230,9 @@ fun PostponeScreen(
 
             // Notification Card
             Card(
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFFDF2F2)),
+                colors = CardDefaults.cardColors(containerColor = SurfaceLightRed),
                 shape = RoundedCornerShape(8.dp),
-                border = BorderStroke(1.dp, Color(0xFFFAD2D2)),
+                border = BorderStroke(1.dp, OutlineVariant),
                 elevation = CardDefaults.cardElevation(0.dp)
             ) {
                 Row(
@@ -269,20 +269,20 @@ fun PostponeScreen(
                     .fillMaxWidth()
                     .height(50.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Primary),
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(12.dp)
             ) {
                 Icon(Icons.AutoMirrored.Outlined.Send, contentDescription = null, modifier = Modifier.size(16.dp))
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Enviar aviso y posponer", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                Text("Enviar aviso y posponer", fontSize = 16.sp, fontWeight = FontWeight.Medium)
             }
 
             Spacer(modifier = Modifier.height(8.dp))
 
             TextButton(
                 onClick = onNavigateBack,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth().height(50.dp)
             ) {
-                Text("Cancelar y volver", color = Secondary)
+                Text("Cancelar y volver", color = Secondary, fontSize = 16.sp, fontWeight = FontWeight.Medium)
             }
 
             Spacer(modifier = Modifier.height(32.dp))
@@ -319,7 +319,7 @@ fun PostponeOption(
             .fillMaxWidth()
             .padding(vertical = 4.dp)
             .clickable(onClick = onClick),
-        colors = CardDefaults.cardColors(containerColor = if (selected) Color(0xFFE8F5F3) else White),
+        colors = CardDefaults.cardColors(containerColor = if (selected) SurfaceLightGreen else White),
         shape = RoundedCornerShape(12.dp),
         border = if (selected) BorderStroke(1.dp, Primary) else BorderStroke(1.dp, OutlineVariant),
         elevation = CardDefaults.cardElevation(0.dp)
@@ -353,7 +353,7 @@ fun PostponeOption(
                         "Sugerido",
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                         color = Primary,
-                        style = AppTypography.labelLarge.copy(fontSize = 10.sp)
+                        style = AppTypography.labelMedium
                     )
                 }
             }

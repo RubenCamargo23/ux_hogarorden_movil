@@ -54,8 +54,8 @@ fun LoginScreen(
             Box(
                 modifier = Modifier
                     .size(64.dp)
-                    .background(Color.White, RoundedCornerShape(16.dp))
-                    .border(1.dp, OutlineVariant, RoundedCornerShape(16.dp)),
+                    .background(Color.White, RoundedCornerShape(20.dp))
+                    .border(1.dp, OutlineVariant, RoundedCornerShape(20.dp)),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
@@ -70,13 +70,13 @@ fun LoginScreen(
             
             Text(
                 text = "Hogar en Orden",
-                style = AppTypography.titleLarge,
+                style = AppTypography.headlineSmall.copy(fontWeight = FontWeight.Bold),
                 color = NeutralAction
             )
-            
+            Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = "Coordinación sencilla del hogar",
-                style = AppTypography.bodySmall,
+                style = AppTypography.bodyMedium,
                 color = Secondary
             )
             
@@ -97,7 +97,8 @@ fun LoginScreen(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(BackgroundColor, RoundedCornerShape(8.dp))
+                            .background(BackgroundColor, RoundedCornerShape(12.dp))
+                            .border(1.dp, OutlineVariant, RoundedCornerShape(12.dp))
                             .padding(4.dp)
                     ) {
                         Button(
@@ -107,22 +108,22 @@ fun LoginScreen(
                                 containerColor = Color.White,
                                 contentColor = NeutralAction
                             ),
-                            shape = RoundedCornerShape(6.dp),
+                            shape = RoundedCornerShape(8.dp),
                             elevation = ButtonDefaults.buttonElevation(
                                 defaultElevation = 1.dp,
                                 pressedElevation = 0.dp
                             ),
-                            contentPadding = PaddingValues(0.dp)
+                            contentPadding = PaddingValues(12.dp)
                         ) {
-                            Text("Iniciar sesión", fontWeight = FontWeight.Bold)
+                            Text("Iniciar sesión", fontWeight = FontWeight.Bold, style = AppTypography.titleSmall)
                         }
                         TextButton(
                             onClick = onNavigateToRegister,
                             modifier = Modifier.weight(1f),
                             colors = ButtonDefaults.textButtonColors(contentColor = Secondary),
-                            contentPadding = PaddingValues(0.dp)
+                            contentPadding = PaddingValues(12.dp)
                         ) {
-                            Text("Crear cuenta")
+                            Text("Crear cuenta", style = AppTypography.titleSmall, fontWeight = FontWeight.Medium)
                         }
                     }
                     
@@ -135,14 +136,15 @@ fun LoginScreen(
                         OutlinedTextField(
                             value = email,
                             onValueChange = { email = it },
-                            placeholder = { Text("correo@ejemplo.com", color = Secondary) },
+                            placeholder = { Text("correo@ejemplo.com", color = Secondary, style = AppTypography.bodyMedium) },
                             modifier = Modifier.fillMaxWidth(),
-                            shape = RoundedCornerShape(8.dp),
+                            shape = RoundedCornerShape(12.dp),
                             colors = OutlinedTextFieldDefaults.colors(
                                 unfocusedBorderColor = OutlineVariant,
                                 focusedBorderColor = Primary
                             ),
-                            singleLine = true
+                            singleLine = true,
+                            textStyle = AppTypography.bodyMedium
                         )
                     }
                     
@@ -166,9 +168,9 @@ fun LoginScreen(
                         OutlinedTextField(
                             value = password,
                             onValueChange = { password = it },
-                            placeholder = { Text("••••••••", color = Secondary) },
+                            placeholder = { Text("••••••••", color = Secondary, style = AppTypography.bodyMedium) },
                             modifier = Modifier.fillMaxWidth(),
-                            shape = RoundedCornerShape(8.dp),
+                            shape = RoundedCornerShape(12.dp),
                             colors = OutlinedTextFieldDefaults.colors(
                                 unfocusedBorderColor = OutlineVariant,
                                 focusedBorderColor = Primary
@@ -183,7 +185,8 @@ fun LoginScreen(
                                     )
                                 }
                             },
-                            singleLine = true
+                            singleLine = true,
+                            textStyle = AppTypography.bodyMedium
                         )
                     }
                     
@@ -196,9 +199,9 @@ fun LoginScreen(
                             .fillMaxWidth()
                             .height(50.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = Primary),
-                        shape = RoundedCornerShape(8.dp)
+                        shape = RoundedCornerShape(12.dp)
                     ) {
-                        Text("Iniciar sesión", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                        Text("Iniciar sesión", fontSize = 16.sp, fontWeight = FontWeight.Medium)
                     }
                     
                     Spacer(modifier = Modifier.height(24.dp))
@@ -228,10 +231,10 @@ fun LoginScreen(
                             modifier = Modifier
                                 .weight(1f)
                                 .height(48.dp),
-                            shape = RoundedCornerShape(8.dp),
+                            shape = RoundedCornerShape(12.dp),
                             border = BorderStroke(1.dp, OutlineVariant)
                         ) {
-                            Text("Google", color = NeutralAction)
+                            Text("Google", color = NeutralAction, style = AppTypography.titleSmall)
                         }
                         
                         OutlinedButton(
@@ -239,10 +242,10 @@ fun LoginScreen(
                             modifier = Modifier
                                 .weight(1f)
                                 .height(48.dp),
-                            shape = RoundedCornerShape(8.dp),
+                            shape = RoundedCornerShape(12.dp),
                             border = BorderStroke(1.dp, OutlineVariant)
                         ) {
-                            Text("Apple", color = NeutralAction)
+                            Text("Apple", color = NeutralAction, style = AppTypography.titleSmall)
                         }
                     }
                 }

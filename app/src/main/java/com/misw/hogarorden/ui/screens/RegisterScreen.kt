@@ -56,8 +56,8 @@ fun RegisterScreen(
             Box(
                 modifier = Modifier
                     .size(64.dp)
-                    .background(Color.White, RoundedCornerShape(16.dp))
-                    .border(1.dp, OutlineVariant, RoundedCornerShape(16.dp)),
+                    .background(Color.White, RoundedCornerShape(20.dp))
+                    .border(1.dp, OutlineVariant, RoundedCornerShape(20.dp)),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
@@ -72,13 +72,13 @@ fun RegisterScreen(
             
             Text(
                 text = "Hogar en Orden",
-                style = AppTypography.titleLarge,
+                style = AppTypography.headlineSmall.copy(fontWeight = FontWeight.Bold),
                 color = NeutralAction
             )
-            
+            Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = "Coordinación sencilla del hogar",
-                style = AppTypography.bodySmall,
+                style = AppTypography.bodyMedium,
                 color = Secondary
             )
             
@@ -99,16 +99,17 @@ fun RegisterScreen(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(BackgroundColor, RoundedCornerShape(8.dp))
+                            .background(BackgroundColor, RoundedCornerShape(12.dp))
+                            .border(1.dp, OutlineVariant, RoundedCornerShape(12.dp))
                             .padding(4.dp)
                     ) {
                         TextButton(
                             onClick = onNavigateToLogin,
                             modifier = Modifier.weight(1f),
                             colors = ButtonDefaults.textButtonColors(contentColor = Secondary),
-                            contentPadding = PaddingValues(0.dp)
+                            contentPadding = PaddingValues(12.dp)
                         ) {
-                            Text("Iniciar sesión")
+                            Text("Iniciar sesión", style = AppTypography.titleSmall, fontWeight = FontWeight.Medium)
                         }
                         Button(
                             onClick = { /* Already here */ },
@@ -117,14 +118,14 @@ fun RegisterScreen(
                                 containerColor = Color.White,
                                 contentColor = NeutralAction
                             ),
-                            shape = RoundedCornerShape(6.dp),
+                            shape = RoundedCornerShape(8.dp),
                             elevation = ButtonDefaults.buttonElevation(
                                 defaultElevation = 1.dp,
                                 pressedElevation = 0.dp
                             ),
-                            contentPadding = PaddingValues(0.dp)
+                            contentPadding = PaddingValues(12.dp)
                         ) {
-                            Text("Crear cuenta", fontWeight = FontWeight.Bold)
+                            Text("Crear cuenta", fontWeight = FontWeight.Bold, style = AppTypography.titleSmall)
                         }
                     }
                     
@@ -137,14 +138,15 @@ fun RegisterScreen(
                         OutlinedTextField(
                             value = name,
                             onValueChange = { name = it },
-                            placeholder = { Text("Ej. Rubén Darío", color = Secondary) },
+                            placeholder = { Text("Ej. Rubén Darío", color = Secondary, style = AppTypography.bodyMedium) },
                             modifier = Modifier.fillMaxWidth(),
-                            shape = RoundedCornerShape(8.dp),
+                            shape = RoundedCornerShape(12.dp),
                             colors = OutlinedTextFieldDefaults.colors(
                                 unfocusedBorderColor = OutlineVariant,
                                 focusedBorderColor = Primary
                             ),
-                            singleLine = true
+                            singleLine = true,
+                            textStyle = AppTypography.bodyMedium
                         )
                     }
                     
@@ -157,14 +159,15 @@ fun RegisterScreen(
                         OutlinedTextField(
                             value = email,
                             onValueChange = { email = it },
-                            placeholder = { Text("correo@ejemplo.com", color = Secondary) },
+                            placeholder = { Text("correo@ejemplo.com", color = Secondary, style = AppTypography.bodyMedium) },
                             modifier = Modifier.fillMaxWidth(),
-                            shape = RoundedCornerShape(8.dp),
+                            shape = RoundedCornerShape(12.dp),
                             colors = OutlinedTextFieldDefaults.colors(
                                 unfocusedBorderColor = OutlineVariant,
                                 focusedBorderColor = Primary
                             ),
-                            singleLine = true
+                            singleLine = true,
+                            textStyle = AppTypography.bodyMedium
                         )
                     }
                     
@@ -177,9 +180,9 @@ fun RegisterScreen(
                         OutlinedTextField(
                             value = password,
                             onValueChange = { password = it },
-                            placeholder = { Text("Mínimo 8 caracteres", color = Secondary) },
+                            placeholder = { Text("Mínimo 8 caracteres", color = Secondary, style = AppTypography.bodyMedium) },
                             modifier = Modifier.fillMaxWidth(),
-                            shape = RoundedCornerShape(8.dp),
+                            shape = RoundedCornerShape(12.dp),
                             colors = OutlinedTextFieldDefaults.colors(
                                 unfocusedBorderColor = OutlineVariant,
                                 focusedBorderColor = Primary
@@ -194,7 +197,8 @@ fun RegisterScreen(
                                     )
                                 }
                             },
-                            singleLine = true
+                            singleLine = true,
+                            textStyle = AppTypography.bodyMedium
                         )
                     }
                     
@@ -207,14 +211,15 @@ fun RegisterScreen(
                         OutlinedTextField(
                             value = inviteCode,
                             onValueChange = { inviteCode = it },
-                            placeholder = { Text("Ej. ROSALES-784 o déjalo vacío", color = Secondary) },
+                            placeholder = { Text("Ej. ROSALES-784 o déjalo vacío", color = Secondary, style = AppTypography.bodyMedium) },
                             modifier = Modifier.fillMaxWidth(),
-                            shape = RoundedCornerShape(8.dp),
+                            shape = RoundedCornerShape(12.dp),
                             colors = OutlinedTextFieldDefaults.colors(
                                 unfocusedBorderColor = OutlineVariant,
                                 focusedBorderColor = Primary
                             ),
-                            singleLine = true
+                            singleLine = true,
+                            textStyle = AppTypography.bodyMedium
                         )
                     }
                     
@@ -227,9 +232,9 @@ fun RegisterScreen(
                             .fillMaxWidth()
                             .height(50.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = Primary),
-                        shape = RoundedCornerShape(8.dp)
+                        shape = RoundedCornerShape(12.dp)
                     ) {
-                        Text("Crear cuenta", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                        Text("Crear cuenta", fontSize = 16.sp, fontWeight = FontWeight.Medium)
                     }
                     
                     Spacer(modifier = Modifier.height(24.dp))
@@ -259,10 +264,10 @@ fun RegisterScreen(
                             modifier = Modifier
                                 .weight(1f)
                                 .height(48.dp),
-                            shape = RoundedCornerShape(8.dp),
+                            shape = RoundedCornerShape(12.dp),
                             border = BorderStroke(1.dp, OutlineVariant)
                         ) {
-                            Text("Google", color = NeutralAction)
+                            Text("Google", color = NeutralAction, style = AppTypography.titleSmall)
                         }
                         
                         OutlinedButton(
@@ -270,10 +275,10 @@ fun RegisterScreen(
                             modifier = Modifier
                                 .weight(1f)
                                 .height(48.dp),
-                            shape = RoundedCornerShape(8.dp),
+                            shape = RoundedCornerShape(12.dp),
                             border = BorderStroke(1.dp, OutlineVariant)
                         ) {
-                            Text("Apple", color = NeutralAction)
+                            Text("Apple", color = NeutralAction, style = AppTypography.titleSmall)
                         }
                     }
                 }

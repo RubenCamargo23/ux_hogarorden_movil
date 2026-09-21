@@ -36,7 +36,7 @@ fun TaskDetailScreen(
                 TopAppBar(
                     title = {
                         Column {
-                            Text("Mis tareas", style = AppTypography.bodyLarge, fontWeight = FontWeight.Bold)
+                            Text("Mis tareas", style = AppTypography.titleLarge, fontWeight = FontWeight.Bold)
                             Text("Lavar los platos • Cocina", style = AppTypography.bodySmall, color = Secondary)
                         }
                     },
@@ -77,14 +77,14 @@ fun TaskDetailScreen(
                 Box(
                     modifier = Modifier
                         .size(40.dp)
-                        .background(White, RoundedCornerShape(8.dp))
-                        .border(1.dp, OutlineVariant, RoundedCornerShape(8.dp)),
+                        .background(White, RoundedCornerShape(12.dp))
+                        .border(1.dp, OutlineVariant, RoundedCornerShape(12.dp)),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(Icons.Default.CleaningServices, contentDescription = null, tint = Primary, modifier = Modifier.size(20.dp))
                 }
                 Spacer(modifier = Modifier.width(12.dp))
-                Text("Lavar los platos", style = AppTypography.titleLarge, color = NeutralAction)
+                Text("Lavar los platos", style = AppTypography.headlineSmall.copy(fontWeight = FontWeight.Bold), color = NeutralAction)
             }
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -110,9 +110,9 @@ fun TaskDetailScreen(
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 6.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Icon(Icons.Default.LocalFireDepartment, contentDescription = null, tint = Accent, modifier = Modifier.size(14.dp))
+                        Icon(Icons.Default.LocalFireDepartment, contentDescription = null, tint = Accent, modifier = Modifier.size(16.dp))
                         Spacer(modifier = Modifier.width(4.dp))
-                        Text("Racha: 4 días", style = AppTypography.bodySmall, color = Accent, fontWeight = FontWeight.Bold)
+                        Text("Racha: 4 días", style = AppTypography.bodyMedium, color = Accent, fontWeight = FontWeight.Medium)
                     }
                 }
             }
@@ -170,14 +170,14 @@ fun TaskDetailScreen(
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(Icons.Default.Handshake, contentDescription = null, tint = Accent, modifier = Modifier.size(16.dp))
+                        Icon(Icons.Default.Handshake, contentDescription = null, tint = Accent, modifier = Modifier.size(18.dp))
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text("ACUERDOS DE CONVIVENCIA", style = AppTypography.labelLarge.copy(fontSize = 12.sp, fontWeight = FontWeight.Bold), color = Primary)
+                        Text("ACUERDOS DE CONVIVENCIA", style = AppTypography.labelLarge, color = Primary)
                     }
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         "Dejar el escurridor limpio y secar sartenes de teflón con paño suave.",
-                        style = AppTypography.bodySmall,
+                        style = AppTypography.bodyMedium,
                         color = NeutralAction
                     )
                 }
@@ -192,11 +192,11 @@ fun TaskDetailScreen(
                     .fillMaxWidth()
                     .height(50.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Primary),
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(12.dp)
             ) {
                 Icon(Icons.Outlined.CheckCircle, contentDescription = null, modifier = Modifier.size(20.dp))
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Marcar como hecha", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                Text("Marcar como hecha", fontSize = 16.sp, fontWeight = FontWeight.Medium)
             }
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -207,12 +207,12 @@ fun TaskDetailScreen(
                     .fillMaxWidth()
                     .height(50.dp),
                 colors = ButtonDefaults.outlinedButtonColors(contentColor = Accent),
-                border = BorderStroke(1.dp, Accent),
-                shape = RoundedCornerShape(8.dp)
+                border = BorderStroke(1.dp, OutlineVariant),
+                shape = RoundedCornerShape(12.dp)
             ) {
                 Icon(Icons.Outlined.Schedule, contentDescription = null, modifier = Modifier.size(20.dp), tint = Accent)
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Posponer con aviso", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Accent)
+                Text("Posponer con aviso", fontSize = 16.sp, fontWeight = FontWeight.Medium, color = Accent)
             }
 
             Spacer(modifier = Modifier.height(32.dp))
@@ -225,17 +225,17 @@ fun InfoCard(modifier: Modifier = Modifier, label: String, icon: @Composable () 
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(containerColor = White),
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(12.dp),
         border = BorderStroke(1.dp, OutlineVariant),
         elevation = CardDefaults.cardElevation(0.dp)
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
-            Text(label, style = AppTypography.labelLarge.copy(fontSize = 10.sp), color = Secondary)
+            Text(label, style = AppTypography.labelMedium, color = Secondary)
             Spacer(modifier = Modifier.height(4.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 icon()
                 Spacer(modifier = Modifier.width(6.dp))
-                Text(value, style = AppTypography.bodySmall, color = NeutralAction, fontWeight = FontWeight.Medium)
+                Text(value, style = AppTypography.bodyMedium, color = NeutralAction, fontWeight = FontWeight.Medium)
             }
         }
     }

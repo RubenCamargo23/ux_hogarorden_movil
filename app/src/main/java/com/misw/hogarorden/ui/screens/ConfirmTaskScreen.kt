@@ -37,7 +37,7 @@ fun ConfirmTaskScreen(
                 TopAppBar(
                     title = {
                         Column {
-                            Text("Confirmar Tarea", style = AppTypography.bodyLarge, fontWeight = FontWeight.Bold)
+                            Text("Confirmar Tarea", style = AppTypography.titleLarge, fontWeight = FontWeight.Bold)
                             Text("Lavar los platos • Cocina", style = AppTypography.bodySmall, color = Secondary)
                         }
                     },
@@ -116,21 +116,21 @@ fun ConfirmTaskScreen(
                                 onClick = { },
                                 modifier = Modifier.weight(1f).height(44.dp),
                                 colors = ButtonDefaults.buttonColors(containerColor = White, contentColor = NeutralAction),
-                                shape = RoundedCornerShape(8.dp)
+                                shape = RoundedCornerShape(12.dp)
                             ) {
                                 Icon(Icons.Default.PhotoCamera, contentDescription = null, modifier = Modifier.size(18.dp))
                                 Spacer(modifier = Modifier.width(6.dp))
-                                Text("Volver a tomar", fontSize = 12.sp, fontWeight = FontWeight.Medium)
+                                Text("Volver a tomar", style = AppTypography.labelMedium)
                             }
                             Button(
                                 onClick = { },
                                 modifier = Modifier.weight(1f).height(44.dp),
                                 colors = ButtonDefaults.buttonColors(containerColor = White, contentColor = NeutralAction),
-                                shape = RoundedCornerShape(8.dp)
+                                shape = RoundedCornerShape(12.dp)
                             ) {
                                 Icon(Icons.Default.FlipCameraIos, contentDescription = null, modifier = Modifier.size(18.dp))
                                 Spacer(modifier = Modifier.width(6.dp))
-                                Text("Cambiar foto", fontSize = 12.sp, fontWeight = FontWeight.Medium)
+                                Text("Cambiar foto", style = AppTypography.labelMedium)
                             }
                         }
                     }
@@ -143,7 +143,7 @@ fun ConfirmTaskScreen(
                     ) {
                         Icon(Icons.Default.CheckCircleOutline, contentDescription = null, tint = Primary, modifier = Modifier.size(18.dp))
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text("Evidencia lista para notificar al hogar", style = AppTypography.bodyMedium, color = Secondary)
+                        Text("Evidencia lista para notificar al hogar", style = AppTypography.bodyMedium, color = NeutralAction)
                     }
                 }
             }
@@ -158,7 +158,7 @@ fun ConfirmTaskScreen(
                 elevation = CardDefaults.cardElevation(0.dp)
             ) {
                 Column(modifier = Modifier.padding(16.dp).fillMaxWidth()) {
-                    Text("Comentario para el hogar (opcional)", style = AppTypography.labelLarge.copy(fontSize = 12.sp, fontWeight = FontWeight.Bold), color = NeutralAction)
+                    Text("Comentario para el hogar (opcional)", style = AppTypography.titleSmall, color = NeutralAction)
                     Spacer(modifier = Modifier.height(12.dp))
 
                     TextField(
@@ -204,9 +204,8 @@ fun ConfirmTaskScreen(
                             Spacer(modifier = Modifier.width(12.dp))
                             Text(
                                 text = "Avisar a Brian y Ana al completar", 
-                                style = AppTypography.bodyMedium, 
+                                style = AppTypography.titleMedium, 
                                 color = NeutralAction, 
-                                fontWeight = FontWeight.Medium,
                                 maxLines = 1,
                                 overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
                             )
@@ -233,7 +232,7 @@ fun ConfirmTaskScreen(
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Surface(
-                            color = Color(0xFFE8F5F3),
+                            color = SurfaceLightGreen,
                             shape = RoundedCornerShape(16.dp)
                         ) {
                             Row(
@@ -259,27 +258,27 @@ fun ConfirmTaskScreen(
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Submit
+            // Actions
             Button(
                 onClick = onConfirmTask,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Primary),
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(12.dp)
             ) {
                 Icon(Icons.Default.Check, contentDescription = null, modifier = Modifier.size(20.dp))
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Confirmar y Enviar", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                Text("Confirmar y Enviar", fontSize = 16.sp, fontWeight = FontWeight.Medium)
             }
 
             Spacer(modifier = Modifier.height(12.dp))
 
             TextButton(
                 onClick = onNavigateBack,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth().height(50.dp)
             ) {
-                Text("Cancelar", color = NeutralAction)
+                Text("Cancelar", color = Secondary, fontSize = 16.sp, fontWeight = FontWeight.Medium)
             }
 
             Spacer(modifier = Modifier.height(32.dp))
