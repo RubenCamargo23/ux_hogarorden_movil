@@ -19,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.SpanStyle
@@ -37,7 +36,7 @@ fun PostponeScreen(
     onNavigateBack: () -> Unit,
     onConfirmPostpone: () -> Unit
 ) {
-    var selectedOption by remember { mutableStateOf(0) }
+    var selectedOption by remember { mutableIntStateOf(0) }
     var message by remember { mutableStateOf("Estoy saliendo tarde del trabajo, la lavo apenas llegue a las 10 pm.") }
 
     Scaffold(
