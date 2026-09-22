@@ -18,11 +18,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.Image
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.misw.hogarorden.R
 import com.misw.hogarorden.ui.theme.*
 
@@ -30,10 +33,12 @@ import com.misw.hogarorden.ui.theme.*
 @Composable
 fun ConfirmTaskScreen(
     onNavigateBack: () -> Unit,
-    onConfirmTask: () -> Unit
+    onConfirmTask: () -> Unit,
+    onNavigateToNotices: () -> Unit
 ) {
     var comment by remember { mutableStateOf("") }
     var notifyOthers by remember { mutableStateOf(true) }
+    var showSuccessDialog by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -269,7 +274,7 @@ fun ConfirmTaskScreen(
 
             // Actions
             Button(
-                onClick = onConfirmTask,
+                onClick = { showSuccessDialog = true },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp),
@@ -291,6 +296,144 @@ fun ConfirmTaskScreen(
             }
 
             Spacer(modifier = Modifier.height(32.dp))
+        }
+    }
+
+    if (showSuccessDialog) {
+        Dialog(
+            onDismissRequest = { showSuccessDialog = false },
+            properties = DialogProperties(usePlatformDefaultWidth = false)
+        ) {
+            Surface(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp),
+                shape = RoundedCornerShape(24.dp),
+                color = White,
+                shadowElevation = 8.dp
+            ) {
+                Column(
+                    modifier = Modifier.padding(24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    // Check Icon
+                    Box(
+                        modifier = Modifier
+                            .size(64.dp)
+                            .background(SurfaceLightGreen, CircleShape),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Check,
+                            contentDescription = "Success",
+                            tint = Primary,
+                            modifier = Modifier.size(32.dp)
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Text("¡Genial, Rubén!", style = AppTypography.headlineSmall, fontWeight = FontWeight.Bold, color = NeutralAction)
+                    
+                    Spacer(modifier = Modifier.height(8.dp))
+                    
+                    Text(
+                        "Tu evidencia de 'Lavar los platos' fue validada y enviada a Casa de los Rosales.",
+                        style = AppTypography.bodyMedium,
+                        color = Secondary,
+                        textAlign = TextAlign.Center
+                    )
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    // Rewards Card
+                    Surface(
+                        color = SurfaceLightGreen,
+                        shape = RoundedCornerShape(12.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(12.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Icon(Icons.Default.Stars, contentDescription = null, tint = Primary, modifier = Modifier.size(16.dp))
+                                Spacer(modifier = Modifier.width(4.dp))
+                                Text("+10 puntos ganados", color = Primary, style = AppTypography.labelMedium)
+                            }
+                            Surface(
+                                color = White,
+                                shape = RoundedCornerShape(12.dp)
+                            ) {
+                                Text(
+                                    "Racha: 5 días \uD83D\uDD25",
+                                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                                    style = AppTypography.labelSmall,
+                                    color = Primary
+                                )
+                            }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // Avatars Note
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        // Dummy avatars
+                        Box(
+                            modifier = Modifier
+                                .size(24.dp)
+                                .background(Color(0xFFB2DFDB), CircleShape)
+                                .border(1.dp, White, CircleShape),
+                            contentAlignment = Alignment.Center
+                        ) { Text("B", color = Primary, style = AppTypography.labelSmall) }
+                        Box(
+                            modifier = Modifier
+                                .size(24.dp)
+                                .offset(x = (-8).dp)
+                                .background(Primary, CircleShape)
+                                .border(1.dp, White, CircleShape),
+                            contentAlignment = Alignment.Center
+                        ) { Text("A", color = White, style = AppTypography.labelSmall) }
+                        
+                        Text("Brian y Ana recibieron el aviso", style = AppTypography.bodySmall, color = Secondary)
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Icon(Icons.Default.CheckCircle, contentDescription = null, tint = Primary, modifier = Modifier.size(14.dp))
+                    }
+
+                    Spacer(modifier = Modifier.height(32.dp))
+
+                    Button(
+                        onClick = {
+                            showSuccessDialog = false
+                            onConfirmTask()
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(50.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = Primary),
+                        shape = RoundedCornerShape(12.dp)
+                    ) {
+                        Text("Volver a Mis Tareas", fontSize = 16.sp, fontWeight = FontWeight.Medium)
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    TextButton(
+                        onClick = {
+                            showSuccessDialog = false
+                            onNavigateToNotices()
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(50.dp)
+                    ) {
+                        Text("Ver en Avisos del Hogar", color = Primary, fontSize = 16.sp, fontWeight = FontWeight.Medium)
+                    }
+                }
+            }
         }
     }
 }
