@@ -27,13 +27,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.misw.hogarorden.ui.theme.*
 
+import com.misw.hogarorden.Screen
+import com.misw.hogarorden.ui.components.BottomNavBar
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    onNavigateToTaskDetail: () -> Unit
+    onNavigateToTaskDetail: () -> Unit,
+    onNavigateBottomNav: (String) -> Unit
 ) {
     Scaffold(
-        bottomBar = { HomeBottomNavigation() },
+        bottomBar = { BottomNavBar(currentRoute = Screen.Home.route, onNavigate = onNavigateBottomNav) },
         containerColor = BackgroundColor
     ) { paddingValues ->
         Column(
@@ -296,56 +300,3 @@ fun TaskItem(
     }
 }
 
-@Composable
-fun HomeBottomNavigation() {
-    NavigationBar(
-        containerColor = White,
-        tonalElevation = 8.dp
-    ) {
-        NavigationBarItem(
-            selected = true,
-            onClick = { },
-            icon = { Icon(Icons.Default.EventAvailable, contentDescription = "Hoy") },
-            label = { Text("Hoy", fontWeight = FontWeight.Bold) },
-            colors = NavigationBarItemDefaults.colors(
-                selectedIconColor = Primary,
-                selectedTextColor = Primary,
-                indicatorColor = White
-            )
-        )
-        NavigationBarItem(
-            selected = false,
-            onClick = { },
-            icon = { 
-                BadgedBox(badge = { Badge { Text("1") } }) {
-                    Icon(Icons.Default.Notifications, contentDescription = "Avisos")
-                }
-            },
-            label = { Text("Avisos") },
-            colors = NavigationBarItemDefaults.colors(
-                unselectedIconColor = Secondary,
-                unselectedTextColor = Secondary
-            )
-        )
-        NavigationBarItem(
-            selected = false,
-            onClick = { },
-            icon = { Icon(Icons.Default.EmojiEvents, contentDescription = "Puntos") },
-            label = { Text("Puntos") },
-            colors = NavigationBarItemDefaults.colors(
-                unselectedIconColor = Secondary,
-                unselectedTextColor = Secondary
-            )
-        )
-        NavigationBarItem(
-            selected = false,
-            onClick = { },
-            icon = { Icon(Icons.Default.ManageAccounts, contentDescription = "Perfil") },
-            label = { Text("Perfil") },
-            colors = NavigationBarItemDefaults.colors(
-                unselectedIconColor = Secondary,
-                unselectedTextColor = Secondary
-            )
-        )
-    }
-}
